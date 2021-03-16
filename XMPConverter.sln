@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31105.61
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XMPConverter", "XMPConverter\XMPConverter.vcxproj", "{D7DCF542-5957-4A34-A81E-433268BD580F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7DCF542-5957-4A34-A81E-433268BD580F}.Debug|x64.ActiveCfg = Debug|x64
+		{D7DCF542-5957-4A34-A81E-433268BD580F}.Debug|x64.Build.0 = Debug|x64
+		{D7DCF542-5957-4A34-A81E-433268BD580F}.Debug|x86.ActiveCfg = Debug|Win32
+		{D7DCF542-5957-4A34-A81E-433268BD580F}.Debug|x86.Build.0 = Debug|Win32
+		{D7DCF542-5957-4A34-A81E-433268BD580F}.Release|x64.ActiveCfg = Release|x64
+		{D7DCF542-5957-4A34-A81E-433268BD580F}.Release|x64.Build.0 = Release|x64
+		{D7DCF542-5957-4A34-A81E-433268BD580F}.Release|x86.ActiveCfg = Release|Win32
+		{D7DCF542-5957-4A34-A81E-433268BD580F}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1B7B2473-6FE6-45ED-A11A-FE89436C36FA}
+	EndGlobalSection
+EndGlobal

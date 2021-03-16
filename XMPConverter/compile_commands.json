@@ -1,0 +1,12 @@
+[
+    {
+        "file":"../../../../Desktop/b.visual.cpp",
+        "command":"ClCompile -DNDEBUG -DWIN32 -D_CONSOLE -D_DEBUG \"../../../../Desktop/b.visual.cpp\"",
+        "directory":"C:/Users/Michele/source/repos/XMPconverter/XMPConverter"
+    },
+    {
+        "file":"../../../../Desktop/lightMD5.cpp",
+        "command":"ClCompile -DNDEBUG -DWIN32 -D_CONSOLE -D_DEBUG \"../../../../Desktop/lightMD5.cpp\"",
+        "directory":"C:/Users/Michele/source/repos/XMPconverter/XMPConverter"
+    }
+]
