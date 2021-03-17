@@ -544,8 +544,8 @@ int main(int argc, char** argv) {
 		auto t1 = std::chrono::high_resolution_clock::now();
 		//tbb::parallel_for_each(inputFiles.begin(), inputFiles.end(), [&](string& inputFile) {
 		for_each(std::execution::par, inputFiles.begin(), inputFiles.end(), [&](string& inputFile) {
-			//#pragma omp parallel for
-			//for (const auto& inputFile : inputFiles) {
+		//#pragma omp parallel for
+		//for (const auto& inputFile : inputFiles) {
 
 			if (fileExists(inputFile)) {
 				string filecheck = inputFile.substr(inputFile.find_last_of(".") + 1);
