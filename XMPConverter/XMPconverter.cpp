@@ -155,7 +155,7 @@ struct optparse_long longopts[] = {
  {"output",  'o' ,OPTPARSE_REQUIRED},
  {"title",  'T',   OPTPARSE_REQUIRED},
  {"group", 'G',   OPTPARSE_REQUIRED},
- {"help",  'h',    OPTPARSE_REQUIRED},
+ {"help",  'h',   OPTPARSE_NONE},
  {0}
 };
 
@@ -189,11 +189,7 @@ void encode(string path, string& outFileName) {
 
 	char* points = nullptr;
 	for (const char* s = text->c_str(); *s; ++s) if (*s == '\n' && *++s <= '9' && *s >= '0') { points = strdup(s); delete text;  break; }
-	for (int32 idx = 0; idx < input_size * input_size * input_size * 3; idx += 3) {
-		samples_1[idx] = strtod(points++, &points);
-		samples_1[idx + 1] = strtod(points++, &points);
-		samples_1[idx + 2] = strtod(points++, &points);
-	}
+	for (int32 idx = 0; idx < input_size * input_size * input_size * 3;) samples_1[idx++] = strtod(points++, &points);
 
 
 	uint32 size = (input_size > options.size) ? options.size : input_size;
@@ -262,7 +258,7 @@ void encode(string path, string& outFileName) {
 
 	printf("tot: %d\n", padding);
 #ifdef DEBUG
-	FILE* f_5 = fopen("C:\\Users\\Michele\\Downloads\\outputarray.txt", "w+");
+	FILE* f_5 = fopen("C:\\Users\\Michele\\Downloads\\outputarray.txt", "wb");
 	for (uint32 i = 0, j = 0, k = 0; i < padding; ++i) {
 		if (i >= 16 && i < padding - 28) {
 			if (j % 6 == 0) { fputs(("\n"), f_5); j = 0; }
@@ -300,7 +296,7 @@ void encode(string path, string& outFileName) {
 	delete[] samples_2;
 	uint32 compressedSize_1 = (uint32)dCount + 4;
 #ifdef DEBUG
-	FILE* f_1 = fopen("C:\\Users\\Michele\\Downloads\\outputencoded.txt", "w+");
+	FILE* f_1 = fopen("C:\\Users\\Michele\\Downloads\\outputencoded.txt", "wb");
 	for (uint32 i = 0; i < safeCompressedSize + 4; ++i)
 		fputs((std::to_string(dPtr_1[i]) + " ").c_str(), f_1);
 	fclose(f_1);
@@ -312,7 +308,7 @@ void encode(string path, string& outFileName) {
 	int32 zResult_2 = uncompress(block3_1, &destLen_1, dPtr_1 + 4, compressedSize_1 - 4);
 	printf("%s %d", "zResult_2:", zResult_2);
 #ifdef DEBUG
-	FILE* f_2 = fopen("C:\\Users\\Michele\\Downloads\\outputencoded_1.txt", "w+");
+	FILE* f_2 = fopen("C:\\Users\\Michele\\Downloads\\outputencoded_1.txt", "wb");
 	for (uint32 i = 0; i < uncompressedSize_1; ++i)
 		fputs((std::to_string(block3_1[i]) + " ").c_str(), f_2);
 	fclose(f_2);
@@ -337,7 +333,7 @@ void encode(string path, string& outFileName) {
 	}
 	delete[] dPtr_1;
 
-	FILE* f_6 = fopen(outFileName.c_str(), "w+");
+	FILE* f_6 = fopen(outFileName.c_str(), "wb");
 	string assembled = xmp_container[0] + UUID + xmp_container[1] + options.strength + xmp_container[2] + MD5 + xmp_container[3] + MD5 + xmp_container[4];
 	fwrite(assembled.c_str(), 1, assembled.size(), f_6);
 	fwrite(dPtr_2, 1, k, f_6);
@@ -354,7 +350,7 @@ void decode(string path, string& outFileName) {
 	uint32 compressedSize = 0;
 	string* block1 = new string(get_file_contents(path));
 	uint32 found = block1->find("Name>\n    <rdf:Alt>\n     <rdf:li xml:lang=\"x-default\">") + 54;
-	if (found == 53) found = block1->find("Name>\r\n    <rdf:Alt>\r\n     <rdf:li xml:lang=\"x-default\">") + 56;
+	//if (found == 53) found = block1->find("Name>\r\n    <rdf:Alt>\r\n     <rdf:li xml:lang=\"x-default\">") + 56;
 	string title = block1->substr(found, block1->find("</", found) - found);
 	found = block1->find("=\"", block1->find(":RGBTable=\"") + 11) + 2;
 	*block1 = block1->substr(found, (block1->find("\"", found)) - found);
@@ -399,7 +395,7 @@ void decode(string path, string& outFileName) {
 
 	printf("\n%s %d\n%s %d\n%s %d\n%s %d\n", "encodedSize:", encodedSize, "compressedSize:", compressedSize, "uncompressedSize:", uncompressedSize, "compressedSize-4:", compressedSize - 4);
 #ifdef DEBUG
-	FILE* f = fopen("C:\\Users\\Michele\\Downloads\\outputdecoded.txt", "w+");
+	FILE* f = fopen("C:\\Users\\Michele\\Downloads\\outputdecoded.txt", "wb");
 	for (uint32 i = 0; i < compressedSize; ++i)
 		fprintf(f, "%d ", dPtr[i]);
 	fclose(f);
@@ -412,7 +408,7 @@ void decode(string path, string& outFileName) {
 	delete[] dPtr;
 
 #ifdef DEBUG
-	FILE* f_3 = fopen("C:\\Users\\Michele\\Downloads\\final.txt", "w+");
+	FILE* f_3 = fopen("C:\\Users\\Michele\\Downloads\\final.txt", "wb");
 	for (uint32 i = 0, j = 0, k = 0; i < uncompressedSize; ++i) {
 		if (i >= 16 && i < uncompressedSize - 28) {
 			if (j % 6 == 0) { fputs(("\n"), f_3); j = 0; }
@@ -438,7 +434,7 @@ void decode(string path, string& outFileName) {
 	for (uint32 index = 0; index < fDivisions; index++)
 		nopValue[index] = (index * 0x0FFFF + (fDivisions >> 1)) / (fDivisions - 1);
 
-	FILE* f_4 = fopen(outFileName.c_str(), "w+");
+	FILE* f_4 = fopen(outFileName.c_str(), "wb");
 	fprintf(f_4, "TITLE \"%s\"\nDOMAIN_MIN 0 0 0\nDOMAIN_MAX 1 1 1\nLUT_3D_SIZE %d\n", title.c_str(), fDivisions);
 
 	for (uint32 rIndex = 0, idx; rIndex < fDivisions; ++rIndex)
@@ -548,8 +544,8 @@ int main(int argc, char** argv) {
 		auto t1 = std::chrono::high_resolution_clock::now();
 		//tbb::parallel_for_each(inputFiles.begin(), inputFiles.end(), [&](string& inputFile) {
 		for_each(std::execution::par, inputFiles.begin(), inputFiles.end(), [&](string& inputFile) {
-		//#pragma omp parallel for
-		//for (const auto& inputFile : inputFiles) {
+			//#pragma omp parallel for
+			//for (const auto& inputFile : inputFiles) {
 
 			if (fileExists(inputFile)) {
 				string filecheck = inputFile.substr(inputFile.find_last_of(".") + 1);
@@ -569,7 +565,7 @@ int main(int argc, char** argv) {
 					(filecheck == ext[0]) ? decode(inputFile, outFileName) : encode(inputFile, outFileName);
 				}
 			}
-		});
+			});
 		printf("\ntime: %lld\n", std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now() - t1).count());
 	}
 	else printf("missing input");
