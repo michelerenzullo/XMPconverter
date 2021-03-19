@@ -1,6 +1,5 @@
 #include "optparse.h"
 #include "lightMD5.h"
-#include <chrono>
 #include <zlib.h>
 #include <string>
 #include <execution>
@@ -541,11 +540,7 @@ int main(int argc, char** argv) {
 		}
 
 		string ext[] = { "xmp","cube" };
-		auto t1 = std::chrono::high_resolution_clock::now();
-		//tbb::parallel_for_each(inputFiles.begin(), inputFiles.end(), [&](string& inputFile) {
 		for_each(std::execution::par, inputFiles.begin(), inputFiles.end(), [&](string& inputFile) {
-		//#pragma omp parallel for
-		//for (const auto& inputFile : inputFiles) {
 
 			if (fileExists(inputFile)) {
 				string filecheck = inputFile.substr(inputFile.find_last_of(".") + 1);
@@ -566,7 +561,6 @@ int main(int argc, char** argv) {
 				}
 			}
 			});
-		printf("\ntime: %lld\n", std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now() - t1).count());
 	}
 	else printf("missing input");
 	printf("\n");
