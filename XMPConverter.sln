@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XMPConverter", "XMPConverter\XMPConverter.vcxproj", "{D7DCF542-5957-4A34-A81E-433268BD580F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LUTConverter", "LUTConverter\LUTConverter.vcxproj", "{DA642186-CD76-4A31-AA3C-681756EF58FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{D7DCF542-5957-4A34-A81E-433268BD580F}.Release|x64.Build.0 = Release|x64
 		{D7DCF542-5957-4A34-A81E-433268BD580F}.Release|x86.ActiveCfg = Release|Win32
 		{D7DCF542-5957-4A34-A81E-433268BD580F}.Release|x86.Build.0 = Release|Win32
+		{DA642186-CD76-4A31-AA3C-681756EF58FF}.Debug|x64.ActiveCfg = Debug|x64
+		{DA642186-CD76-4A31-AA3C-681756EF58FF}.Debug|x64.Build.0 = Debug|x64
+		{DA642186-CD76-4A31-AA3C-681756EF58FF}.Debug|x86.ActiveCfg = Debug|Win32
+		{DA642186-CD76-4A31-AA3C-681756EF58FF}.Debug|x86.Build.0 = Debug|Win32
+		{DA642186-CD76-4A31-AA3C-681756EF58FF}.Release|x64.ActiveCfg = Release|x64
+		{DA642186-CD76-4A31-AA3C-681756EF58FF}.Release|x64.Build.0 = Release|x64
+		{DA642186-CD76-4A31-AA3C-681756EF58FF}.Release|x86.ActiveCfg = Release|Win32
+		{DA642186-CD76-4A31-AA3C-681756EF58FF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
