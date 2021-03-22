@@ -175,15 +175,16 @@ string get_file_contents(string filename) {
 
 void encode(string path, string& outFileName) {
 	string* text = new string(get_file_contents(path));
-	int32 found1; string title = "";
-	if (!options.title.empty()) title = options.title;
-	else if ((found1 = text->find("TITLE", 0)) != -1) {
-		if (found1 = text->find("\"", found1 + 5) + 1) title = text->substr(found1, text->find("\"", found1) - found1);
-		else if (found1 = text->find("'", found1 + 5) + 1) title = text->substr(found1, text->find("'", found1) - found1);
+	int32 found1;
+	if (options.title.empty()) {
+		if ((found1 = text->find("TITLE", 0)) != -1) {
+			if (found1 = text->find("\"", found1 + 5) + 1) options.title = text->substr(found1, text->find("\"", found1) - found1);
+			else if (found1 = text->find("'", found1 + 5) + 1) options.title = text->substr(found1, text->find("'", found1) - found1);
+		}
+		else options.title = path.substr(path.find_last_of("/\\") + 1, path.find_last_of(".") - (path.find_last_of("/\\") + 1));
 	}
-	else title = path.substr(path.find_last_of("/\\") + 1, path.find_last_of(".") - (path.find_last_of("/\\") + 1));
 	int32 input_size = stoi(text->substr(text->find("_SIZE", 0) + 5, 3));
-	printf("- test encoding back -\nTITLE: %s\nSIZE: %d\n", title.c_str(), input_size);
+	printf("- test encoding back -\nTITLE: %s\nSIZE: %d\n", options.title.c_str(), input_size);
 	double* samples_1 = new double[input_size * input_size * input_size * 3];
 
 	char* points = nullptr;
@@ -194,8 +195,7 @@ void encode(string path, string& outFileName) {
 	uint32 size = (input_size > options.size) ? options.size : input_size;
 	if (input_size > 32) printf("ACR unsupports LUT>32, resampling enabled\n");
 	uint16* nopValue_1 = new uint16[size];
-	for (uint32 index = 0; index < size; index++)
-		nopValue_1[index] = (index * 0x0FFFF + (size >> 1)) / (size - 1);
+	for (uint32 index = 0; index < size; index++) nopValue_1[index] = (index * 0x0FFFF + (size >> 1)) / (size - 1);
 	uint32 padding = 16 + size * size * size * 3 * 2 + 28;
 	uint8* samples_2 = new uint8[padding];
 
@@ -336,7 +336,7 @@ void encode(string path, string& outFileName) {
 	string assembled = xmp_container[0] + UUID + xmp_container[1] + options.strength + xmp_container[2] + MD5 + xmp_container[3] + MD5 + xmp_container[4];
 	fwrite(assembled.c_str(), 1, assembled.size(), f_6);
 	fwrite(dPtr_2, 1, k, f_6);
-	assembled = options.amount + xmp_container[5] + title + xmp_container[6] + options.group + xmp_container[7];
+	assembled = options.amount + xmp_container[5] + options.title + xmp_container[6] + options.group + xmp_container[7];
 	fwrite(assembled.c_str(), 1, assembled.size(), f_6);
 	fclose(f_6);
 
