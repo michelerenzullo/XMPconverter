@@ -187,7 +187,7 @@ void encode(string path, string& outFileName) {
 	double* samples_1 = new double[input_size * input_size * input_size * 3];
 
 	char* points = nullptr;
-	for (const char* s = text->c_str(); *s; ++s) if (*s == '\n' && *++s <= '9' && *s >= '0') { points = strdup(s); delete text;  break; }
+	for (const char* s = text->c_str(); *s; ++s) if (*s == '\n' && *++s <= '9' && *s >= '0') { points = _strdup(s); delete text;  break; }
 	for (int32 idx = 0; idx < input_size * input_size * input_size * 3;) samples_1[idx++] = strtod(points++, &points);
 
 
