@@ -118,10 +118,10 @@ void read_directory(const string& name, std::vector<string>& v) {
 	while ((dp = readdir(dirp)) != NULL) {
 		char* check_extension;
 		if (check_extension = strrchr(dp->d_name, '.')) {
-			for (uint32 i = 0; i < strlen(check_extension); ++i)
-				check_extension[i] = tolower(check_extension[i]);
+			string filename = dp->d_name;
+			for (uint32 i = 0; i < strlen(check_extension); ++i) check_extension[i] = tolower(check_extension[i]);
 			if (check_extension != NULL && (strcmp(check_extension, ".cube") == 0 xor strcmp(check_extension, ".xmp") == 0))
-				v.push_back(name + "/" + string(dp->d_name));
+				v.push_back(name + "/" + filename);
 		}
 	}
 	closedir(dirp);
