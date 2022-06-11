@@ -166,6 +166,7 @@
       <StackReserveSize>
       </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
+      <Version>1.2</Version>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -178,6 +179,15 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </ClInclude>
     <ClInclude Include="lightMD5.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="zconf.h" />
+    <ClInclude Include="zlib.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="XMPConverter.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\xmpconv.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
