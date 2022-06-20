@@ -183,9 +183,9 @@ void encode(string path, string& outFileName) {
 	switch (result) {
 	case -1: printf("Size error - not a CUBE file\n"); break;
 	case -2: printf("Error - no data lut\n"); break;
-	case -3: printf("Error - input file not found\n"); break;
+	//case -3: printf("Error - input file not found\n"); break;     not needed already checked before call encode 
 	case 0:
-		printf("- test encoding back -\nTITLE: %s\nSIZE: %d\n", title, input_size);
+		printf("- test encoding back -\nTITLE: %s\nSIZE: %d\n", (options.title.empty()) ? title : options.title.c_str(), input_size);
 
 		uint32 size = (input_size > options.size) ? options.size : input_size;
 		if (input_size > 32) printf("ACR unsupports LUT>32, resampling enabled\n");
@@ -333,7 +333,8 @@ void encode(string path, string& outFileName) {
 		string assembled = xmp_container[0] + UUID + xmp_container[1] + options.strength + xmp_container[2] + MD5 + xmp_container[3] + MD5 + xmp_container[4];
 		fwrite(assembled.c_str(), 1, assembled.size(), f_6);
 		fwrite(dPtr_2, 1, k, f_6);
-		assembled = options.amount + xmp_container[5] + title + xmp_container[6] + options.group + xmp_container[7];
+
+		assembled = (options.title.empty()) ? options.amount + xmp_container[5] + title + xmp_container[6] + options.group + xmp_container[7] : options.amount + xmp_container[5] + options.title + xmp_container[6] + options.group + xmp_container[7];
 
 		fwrite(assembled.c_str(), 1, assembled.size(), f_6);
 		fclose(f_6);
@@ -455,9 +456,9 @@ void decode(string path, string& outFileName) {
 		fclose(f_4);
 		delete[] nopValue;
 		delete[] block3;
-			}
+	}
 	else printf("not a valid xmp profile\n");
-		}
+}
 
 int main(int argc, char** argv) {
 	std::vector<string> inputFiles;
