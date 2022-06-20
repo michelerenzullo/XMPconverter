@@ -175,14 +175,14 @@ string get_file_contents(string filename) {
 
 
 void encode(string path, string& outFileName) {
-	char title[100];
+	char title[100] = { 0 };
 	int32_t input_size;
 	double* samples_1 = NULL;
-	int32_t result = CUBEParser(path.c_str(), title, &input_size, &samples_1);
+	int32_t result = CUBEParser(path.data(), 1, title, &input_size, &samples_1);
 
 	switch (result) {
-	case -1: printf("Size error - not a CUBE file\n"); break;
-	case -2: printf("Error - no data lut\n"); break;
+	case -1: printf("Error - no data lut\n"); break;
+	case -2: printf("Size error - not a CUBE file\n"); break;
 	//case -3: printf("Error - input file not found\n"); break;     not needed already checked before call encode 
 	case 0:
 		printf("- test encoding back -\nTITLE: %s\nSIZE: %d\n", (options.title.empty()) ? title : options.title.c_str(), input_size);
