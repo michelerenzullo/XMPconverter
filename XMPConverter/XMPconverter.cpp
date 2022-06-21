@@ -183,7 +183,7 @@ void encode(string path, string& outFileName) {
 	switch (result) {
 	case -1: printf("Error - no data lut\n"); break;
 	case -2: printf("Size error - not a CUBE file\n"); break;
-	//case -3: printf("Error - input file not found\n"); break;     not needed already checked before call encode 
+		//case -3: printf("Error - input file not found\n"); break;     not needed already checked before call encode 
 	case 0:
 		printf("- test encoding back -\nTITLE: %s\nSIZE: %d\n", (options.title.empty()) ? title : options.title.c_str(), input_size);
 
@@ -300,7 +300,7 @@ void encode(string path, string& outFileName) {
 		uLongf destLen_1 = uncompressedSize_1;
 		uint8* block3_1 = new uint8[uncompressedSize_1];
 		int32 zResult_2 = uncompress(block3_1, &destLen_1, dPtr_1 + 4, compressedSize_1 - 4);
-		printf("%s %d", "zResult_2:", zResult_2);
+		printf("%s %d\n", "zResult_2:", zResult_2);
 #ifdef DEBUG
 		FILE* f_2 = fopen("C:\\Users\\miki\\Downloads\\outputencoded_1.txt", "wb");
 		for (uint32 i = 0; i < uncompressedSize_1; ++i)
@@ -330,17 +330,21 @@ void encode(string path, string& outFileName) {
 		delete[] dPtr_1;
 
 		FILE* f_6 = fopen(outFileName.c_str(), "wb");
-		string assembled = xmp_container[0] + UUID + xmp_container[1] + options.strength + xmp_container[2] + MD5 + xmp_container[3] + MD5 + xmp_container[4];
-		fwrite(assembled.c_str(), 1, assembled.size(), f_6);
-		fwrite(dPtr_2, 1, k, f_6);
+		if (f_6) {
+			string assembled = xmp_container[0] + UUID + xmp_container[1] + options.strength + xmp_container[2] + MD5 + xmp_container[3] + MD5 + xmp_container[4];
+			fwrite(assembled.c_str(), 1, assembled.size(), f_6);
+			fwrite(dPtr_2, 1, k, f_6);
 
-		assembled = (options.title.empty()) ? options.amount + xmp_container[5] + title + xmp_container[6] + options.group + xmp_container[7] : options.amount + xmp_container[5] + options.title + xmp_container[6] + options.group + xmp_container[7];
+			assembled = (options.title.empty()) ? options.amount + xmp_container[5] + title + xmp_container[6] + options.group + xmp_container[7] : options.amount + xmp_container[5] + options.title + xmp_container[6] + options.group + xmp_container[7];
 
-		fwrite(assembled.c_str(), 1, assembled.size(), f_6);
-		fclose(f_6);
+			fwrite(assembled.c_str(), 1, assembled.size(), f_6);
+			fclose(f_6);
+		}
+		else
+			printf("Error writing file\n");
 
 		delete[] dPtr_2;
-		printf("\n%s %d\n%s %d\n", "safeEncodedSize:", safeEncodedSize, "true EncodedSize:", k);
+		printf("%s %d\n%s %d\n", "safeEncodedSize:", safeEncodedSize, "true EncodedSize:", k);
 
 		break;
 	}
@@ -440,20 +444,24 @@ void decode(string path, string& outFileName) {
 			nopValue[index] = (index * 0x0FFFF + (fDivisions >> 1)) / (fDivisions - 1);
 
 		FILE* f_4 = fopen(outFileName.c_str(), "wb");
-		fprintf(f_4, "TITLE \"%s\"\nDOMAIN_MIN 0 0 0\nDOMAIN_MAX 1 1 1\nLUT_3D_SIZE %d\n", title.c_str(), fDivisions);
+		if (f_4) {
+			fprintf(f_4, "TITLE \"%s\"\nDOMAIN_MIN 0 0 0\nDOMAIN_MAX 1 1 1\nLUT_3D_SIZE %d\n", title.c_str(), fDivisions);
 
-		const uint16* block3_ = reinterpret_cast<const uint16*>(block3);
-		for (uint32 rIndex = 0, idx; rIndex < fDivisions; ++rIndex)
-			for (uint32 gIndex = 0; gIndex < fDivisions; ++gIndex)
-				for (uint32 bIndex = 0; bIndex < fDivisions; ++bIndex) {
-					idx = 8 + (rIndex + gIndex * fDivisions + bIndex * fDivisions * fDivisions) * 3;
-					fprintf(f_4, "%.9f %.9f %.9f\n",
-						(uint16)(*(block3_ + idx + 0) + nopValue[bIndex]) / 65535.0f,
-						(uint16)(*(block3_ + idx + 1) + nopValue[gIndex]) / 65535.0f,
-						(uint16)(*(block3_ + idx + 2) + nopValue[rIndex]) / 65535.0f
-					);
-				}
-		fclose(f_4);
+			const uint16* block3_ = reinterpret_cast<const uint16*>(block3);
+			for (uint32 rIndex = 0, idx; rIndex < fDivisions; ++rIndex)
+				for (uint32 gIndex = 0; gIndex < fDivisions; ++gIndex)
+					for (uint32 bIndex = 0; bIndex < fDivisions; ++bIndex) {
+						idx = 8 + (rIndex + gIndex * fDivisions + bIndex * fDivisions * fDivisions) * 3;
+						fprintf(f_4, "%.9f %.9f %.9f\n",
+							(uint16)(*(block3_ + idx + 0) + nopValue[bIndex]) / 65535.0f,
+							(uint16)(*(block3_ + idx + 1) + nopValue[gIndex]) / 65535.0f,
+							(uint16)(*(block3_ + idx + 2) + nopValue[rIndex]) / 65535.0f
+						);
+					}
+			fclose(f_4);
+		}
+		else
+			printf("Error writing file\n");
 		delete[] nopValue;
 		delete[] block3;
 	}
@@ -543,7 +551,7 @@ int main(int argc, char** argv) {
 				printf("WARNING: multiple inputs but only one title\n");
 			}
 			if (!options.outFileName.empty() && !outputIsDir) {
-				mkpath(options.outFileName + "/");
+				if (!mkpath(options.outFileName + "/")) { printf("can't write output dir\n"); return 0; }
 				outputIsDir = true;
 			}
 		}
